@@ -29,12 +29,15 @@ apiDataObj.forEach((obj) => {
   obj.slug = slugify(obj.productName, { lower: true });
 });
 
-const port = 8000;
+const port = 5000;
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
 
-  const { pathname, query } = parsedUrl;
+  const {
+    pathname,
+    query: { id },
+  } = parsedUrl;
 
   switch (pathname) {
     case "/": {
@@ -45,7 +48,7 @@ const server = http.createServer((req, res) => {
       break;
     }
     case "/product": {
-      const product = replaceTemplate(productTemplate, apiDataObj[query.id]);
+      const product = replaceTemplate(productTemplate, apiDataObj[id]);
 
       res.writeHead(200, {
         "Content-type": "text/html",
